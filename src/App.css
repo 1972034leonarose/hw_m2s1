@@ -1,0 +1,84 @@
+h1{
+  margin-top: 40px;
+  margin-left: 20px;
+}
+
+.song-area {
+  background-color: white;
+  margin-right: 20px;
+  float: left;
+  width: 220px;
+  height: 300px;
+  margin-top: 20px;
+  padding: 5px 5px 5px 5px;
+
+  position: relative;
+}
+
+.song-item {
+  text-align: center;
+  margin-top: 4px;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.album {
+  color: rgb(169, 166, 166);
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  width: 175px;
+  height: 175px;
+  box-shadow: 0px 3px 5px 0px rgba(238, 236, 236, 0.5);
+}
+
+
+
+.btn-select {
+  padding: 2px 5px 2px;
+  width: 130px;
+  height: 38px;
+  background-color: #449ce4;
+  border: none;
+  color: white;
+  font-weight: 400;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  
+  position: absolute;
+  margin-top: 39px;
+  left: 22.5%;
+
+}
+
+.btn-select-b{
+  padding: 2px 5px 2px;
+  width: 130px;
+  height: 38px;
+  background-color: #449ce4;
+  border: none;
+  color: white;
+  font-weight: 400;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  
+  position: absolute;
+  margin-top: 20px;
+  left: 22.5%;
+}
+
+.btn-select:hover, .btn-select-b:hover {
+  opacity: 85%;
+}
+
+
+

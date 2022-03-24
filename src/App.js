@@ -4,7 +4,7 @@ import Songs from './data/Sample2';
 import bear from './img/bear.jpeg';
 import cat from './img/cat.jpeg';
 import gift from './img/gift.jpeg';
-
+import { SongCard } from './components/SongCard/index';
 
 function App() {
 
@@ -14,46 +14,16 @@ function App() {
     <div>
     <h1>Make a Playlist!</h1>
 
-    <div className="song-area">
-      <img src={Data.album.images[1].url} className="song-img" alt="Bohemian Rhapsody"></img>
-      <div className="song-item title">{Data.name}</div>
-      <div className="song-item artist">{Data.album.artists[0].name}</div>
-      <div className="song-item album">{Data.album.name}</div>
+      {/* From git source */}
+      <SongCard image={Data.album.images[1].url} title={Data.name} artist={Data.album.artists[0].name} album={Data.album.name} />
 
-      <button className="btn-select-b">Select</button>
-    </div>
+      {/* My own data */}
+      <SongCard image={bear} title={Songs[0].title} artist={Songs[0].artist} album={Songs[0].album} />
 
-    {/* extra data */}
-    <div className="song-area">
-      <img src={bear} className="song-img" alt="Bears"></img>
-      <div className="song-item title">{Songs[0].title}</div>
-      <div className="song-item artist">{Songs[0].artist}</div>
-      <div className="song-item album">{Songs[0].album}</div>
+      <SongCard image={cat} title={Songs[1].title} artist={Songs[1].artist} album={Songs[1].album} />
 
-      <button className="btn-select">Select</button>
-    </div>
-
-    <div className="song-area">
-      <img src={cat} className="song-img" alt="Kit Kat"></img>
-      <div className="song-item title">{Songs[1].title}</div>
-      <div className="song-item artist">{Songs[1].artist}</div>
-      <div className="song-item album">{Songs[1].album}</div>
-
-      <button className="btn-select">Select</button>
-    </div>
-
-    <div className="song-area">
-      <img src={gift} className="song-img" alt="Cats"></img>
-      <div className="song-item title">{Songs[2].title}</div>
-      <div className="song-item artist">{Songs[2].artist}</div>
-      <div className="song-item album">{Songs[2].album}</div>
-
-      <button className="btn-select">Select</button>
-    </div>
-
-
-   
-    </div>
+      <SongCard image={gift} title={Songs[2].title} artist={Songs[2].artist} album={Songs[2].album} />
+      </div>
   );
 }
 

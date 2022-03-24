@@ -15,7 +15,7 @@ function App() {
     <h1>Make a Playlist!</h1>
 
       {/* From git source */}
-      <SongCard image={Data.album.images[1].url} title={Data.name} artist={Data.album.artists[0].name} album={Data.album.name} />
+      <SongCard image={Data.album.images[0].url} title={Data.name} artist={Data.album.artists[0].name} album={Data.album.name} />
 
       {/* My own data */}
       <SongCard image={bear} title={Songs[0].title} artist={Songs[0].artist} album={Songs[0].album} />

@@ -1,15 +1,14 @@
-import 'App.css';
+import "App.css";
 
 export const SongCard = (props) => {
-    return (
-        <div className="song-area">
-            <img src={props.image} className="song-img" alt={props.title}></img>
-            <div className="song-details">
-                <div className="song-item title">{props.title}</div>
-                <div className="song-item artist">{props.artist}</div>
-                <div className="song-item album">{props.album}</div>
-            </div>
-            <button className="btn-select">Select</button>
-        </div>
-    )
-}
+  return (
+      <tr className="song-area">
+        <td className="album-img">
+          <img src={props.image} className="song-img" alt={props.title}></img>
+        </td>
+        <td className="song-item title">{props.title}</td>
+        <td className="song-item artist">{props.artist}</td>
+        <td className="song-item album">{props.album}</td>
+      </tr>
+  );
+};

@@ -1,79 +1,42 @@
 .container{
-  /*TODO: remove white bar on top */
-  height: 100vh;
+  /* TODO: height is so wrong */
+  height: 100%;
   background-color: hsl(0, 0%, 7%);
+  padding: 30px;
   color:#f7f7f7;
 }
 
-h1{
-  padding: 40px 0px 0px 20px;
-}
-
-.song-list{
-  margin-left: 20px;
-}
-
-th{
-  text-align: left;
-  color: white;
-  padding-top: 10px;
-}
-
-.album-img{
-  padding: 0px 8px 5px 30px;
-}
-
-/* TODO: not showing */
-.song-area {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-}
-
-.song-item {
-  vertical-align: middle;
-}
-
-.title {
-  width: 400px;
-  padding: 0px 8px 5px 30px;
-}
-
-.artist{
-  width: 200px;
-}
-
-.album {
-  width: 300px;
-}
-
-img {
-  width: 60px;
-  height: 60px;
-}
-
-
-.btn-select{
-  padding: 2px 5px 2px;
-  margin-bottom: 40px;
-  margin-left: 20px;
-  width: 130px;
-  height: 38px;
-  background-color: #63d05e;
-  border: none;
-  color: #121212;
-  font-weight: 600;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.btn-select:hover {
-  opacity: 85%;
-}
 
 h2{
   color: white;
 }
 
+a{
+  text-decoration: none;
+}
+
+a:visited{
+  color: white;
+}
+
 a:active{
   color: white;
+}
+
+.btn-login{
+  background-color: green;
+  width: 70px;
+  border-radius: 10px;
+  padding: 6px;
+  text-align: center;
+}
+
+.btn-logout{
+  background-color: green;
+  width: 70px;
+  border-radius: 10px;
+  padding: 6px;
+  border: 0;
+  color: white;
+  margin-bottom: 20px;
 }

@@ -12,7 +12,6 @@ import { PlaylistForm } from "../../components/molecules/PlaylistForm/index";
  */
 
 function Track() {
-  // const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
   const CLIENT_ID = "bfa3638f86ad48c1972f2b90b2f45ae7";
   const REDITECT_URI = "http://localhost:3000";
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
@@ -24,15 +23,17 @@ function Track() {
   const [searchParam, setSearchParam] = useState("");
   const [tracks, setTracks] = useState([]);
 
+  const [selected, isSelected] = useState(false);
+
   const [submitted, setIsSubmitted] = useState(false);
   const [playlist, setPlaylist] = useState([]); // to store what's been selected
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-
   const [profile, setProfile] = useState([]);
 
-  // executed on first render
+  // ===================  USE EFFECTS ====================
+  // to authorize
   useEffect(() => {
     const hash = window.location.hash;
     let token = window.localStorage.getItem("token");
@@ -65,6 +66,7 @@ function Track() {
     setToken("");
     window.localStorage.removeItem("token");
   };
+  // ===================  end USE EFFECTS ====================
 
   // ===================  USER DETAILS ====================
   const getUser = async () => {
@@ -81,20 +83,65 @@ function Track() {
     setProfile(fetchedProfile);
     console.log(fetchedProfile);
   };
-  // =================== END USER DETAILS ====================
+  // =================== end USER DETAILS ====================
 
   const createPlaylist = async () => {
     const userId = profile.id;
+    console.log(userId);
     // make the playlist
+    const response = await axios.post(
+      `https://api.spotify.com/v1/users/${userId}/playlists`,
+      {
+        name: title,
+        description: description,
+        public: false,
+        collaborative: false,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    // .then((resp) => {
+    //   // add the tracks to the playlist
+    //   const playlistId = resp.id;
+    //   console.log(`playlistId: ${playlistId}`);
+    //   console.log(playlist);
+    //   const uris = playlist;
+    //   const playlistTracks = async () => {
+    //     await axios.post(
+    //       `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+    //       {
+    //         uris: JSON.stringify(uris),
+    //       },
+    //       {
+    //         headers: {
+    //           Authorization: `Bearer ${token}`,
+    //           "Content-Type": "application/json",
+    //         },
+    //       }
+    //     );
+    //     console.log(uris)
+    //   };
+    //   return playlistTracks;
+    // })
+    console.log("response:");
+    console.log(response);
+    return response.data.id;
+  };
+
+  const addToPlaylist = async (playlistId) => {
+    const uris = playlist;
+    console.log(token);
+    const data = JSON.stringify({ uris });
+
     await axios
       .post(
-        `https://api.spotify.com/v1/users/${userId}/playlists`,
-        {
-          name: title,
-          description: description, 
-          public: false,
-          collaborative: false,
-        },
+        `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+        data,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -103,66 +150,24 @@ function Track() {
         }
       )
       .then((res) => {
-        console.log(res.data);
         return res.data;
-      })
-      .then((resp) => {
-        // add the tracks to the playlist
-        const playlistId = resp.id;
-        console.log(`playlistId: ${playlistId}`);
-        const playlistTracks = axios.post(
-          `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-          {
-            data: playlist,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        console.log(playlistTracks);
-        return playlistTracks;
-      })
-      .catch((e) => console.log(e));
-
-    console.log(title + description);
+      });
   };
 
-  // const addToPlaylist = async (playlistId) => {
-  //   await axios
-  //     .post(
-  //       `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-  //       {
-  //         tracks: playlist,
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     )
-  //     .then((res) => {
-  //       return res.data;
-  //     });
-  // };
+  const handlePlaylist = async (e) => {
+    e.preventDefault();
+    const playlistId = await createPlaylist();
+    console.log(playlistId);
 
-  // const handlePlaylist = async (e) => {
-  //   e.preventDefault();
-  //   const playlistId = await createPlaylist();
-  //   console.log(playlistId);
-
-  //   await addToPlaylist(playlistId);
-  // };
+    await addToPlaylist(playlistId);
+  };
 
   // song = track.uri
   // how to store all data related to track.uri
   // maybe extend with .data.results ?????
   const handleSelect = (song) => {
     if (playlist.includes(song)) {
-      const removed = [...playlist].filter((track) => track !== song);
+      const removed = playlist.filter((track) => track !== song);
       setPlaylist(removed);
     } else {
       setPlaylist([...playlist, song]);
@@ -221,21 +226,30 @@ function Track() {
     />
   ));
 
-  // map playlist
-  // const mapSelected = playlist.map((track) => (
-  //   <SongCard
-  //   key={track.uri} // use uri as identifier
-  //   image={track.album.images[2].url}
-  //   title={track.name}
-  //   artist={track.artists[0].name}
-  //   album={track.album.name}
-  //   // selectSong={() => handleSelect(track.uri)}
-  // />
-  // ));
+  const getPlaylist = () => {
+    console.log(playlist);
+  };
 
   return (
     <>
       <div className="container">
+        {token ? (
+          <form onSubmit={getTracks}>
+            <input
+              type="text"
+              placeholder="Search for a song"
+              onChange={(e) => {
+                setSearchParam(e.target.value);
+              }}
+            ></input>
+            <button type="submit" onClick={isClicked}>
+              Search
+            </button>
+          </form>
+        ) : (
+          <h2> You're not logged in </h2>
+        )}
+
         {!token ? (
           <div className="btn-login">
             <a
@@ -250,32 +264,17 @@ function Track() {
           </button>
         )}
 
-        {/* testing */}
-        <button onClick={getUser}>Profile</button>
-
-        <PlaylistForm
-          title={title}
-          input={(e) => setTitle(e.target.value)}
-          description={(e) => setDescription(e.target.value)}
-          createPlaylist={createPlaylist}
-        />
-        {token ? (
-          <form onSubmit={getTracks}>
-            <input
-              type="text"
-              placeholder="Search for a song"
-              value={searchParam}
-              onChange={(e) => {
-                setSearchParam(e.target.value);
-              }}
-            ></input>
-            <button type="submit" onClick={isClicked}>
-              Search
-            </button>
-          </form>
-        ) : (
-          <h2> Not yet authorized </h2>
+        {token && (
+          <PlaylistForm
+            input={(e) => setTitle(e.target.value)}
+            description={(e) => setDescription(e.target.value)}
+            createPlaylist={handlePlaylist}
+          />
         )}
+
+        {token && <button onClick={getUser}>Profile</button>}
+        {token && <button onClick={getPlaylist}>View Playlist</button>}
+
         <>
           <br />
           <br />

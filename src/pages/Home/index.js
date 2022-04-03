@@ -3,12 +3,14 @@ import "../../App.css";
 import axios from "axios";
 import { SongCard } from "../../components/molecules/SongCard/index";
 import { PlaylistForm } from "../../components/molecules/PlaylistForm/index";
+import LandingPage from "../LandingPage";
+import { SearchBar } from "../../components/molecules/SearchBar";
 
 /**
  * to-do:
  * add tailwind
  * select buttons dont change accordingly, but selected data stored
- * local storage ga perlu?
+ * sometimes berhasil post, sometimes ga ? 
  */
 
 function Home() {
@@ -22,8 +24,6 @@ function Home() {
 
   const [searchParam, setSearchParam] = useState("");
   const [tracks, setTracks] = useState([]);
-
-  const [selected, isSelected] = useState(false);
 
   const [submitted, setIsSubmitted] = useState(false);
   const [playlist, setPlaylist] = useState([]); // to store what's been selected
@@ -104,30 +104,6 @@ function Home() {
         },
       }
     );
-
-    // .then((resp) => {
-    //   // add the tracks to the playlist
-    //   const playlistId = resp.id;
-    //   console.log(`playlistId: ${playlistId}`);
-    //   console.log(playlist);
-    //   const uris = playlist;
-    //   const playlistTracks = async () => {
-    //     await axios.post(
-    //       `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-    //       {
-    //         uris: JSON.stringify(uris),
-    //       },
-    //       {
-    //         headers: {
-    //           Authorization: `Bearer ${token}`,
-    //           "Content-Type": "application/json",
-    //         },
-    //       }
-    //     );
-    //     console.log(uris)
-    //   };
-    //   return playlistTracks;
-    // })
     console.log("response:");
     console.log(response);
     return response.data.id;
@@ -139,16 +115,12 @@ function Home() {
     const data = JSON.stringify({ uris });
 
     await axios
-      .post(
-        `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      .post(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
       .then((res) => {
         return res.data;
       });
@@ -163,8 +135,6 @@ function Home() {
   };
 
   // song = track.uri
-  // how to store all data related to track.uri
-  // maybe extend with .data.results ?????
   const handleSelect = (song) => {
     if (playlist.includes(song)) {
       const removed = playlist.filter((track) => track !== song);
@@ -193,17 +163,7 @@ function Home() {
         },
       })
       .then((response) => {
-        // setSearchStatus(true);
-        // const tempSelectedSong = searchResult.filter((searchResult) =>
-        //   selectedSongUri.includes(searchResult.uri)
-        // );
-        // const tempSearchResult = response.data.tracks.items.filter(
-        //   (searchResult) => !selectedSongUri.includes(searchResult.uri)
-        // );
-        // console.log(tempSearchResult);
-        // console.log(tempSelectedSong);
-        // setSearchResult([...tempSelectedSong, ...tempSearchResult]);
-
+        // selected does not maintain state (button), after another is selected
         response ? setIsSubmitted(true) : setIsSubmitted(false);
         console.log(submitted);
         return response.data.tracks.items;
@@ -232,25 +192,10 @@ function Home() {
 
   return (
     <>
-      <div className="container">
-        {token ? (
-          <form onSubmit={getTracks}>
-            <input
-              type="text"
-              placeholder="Search for a song"
-              onChange={(e) => {
-                setSearchParam(e.target.value);
-              }}
-            ></input>
-            <button type="submit" onClick={isClicked}>
-              Search
-            </button>
-          </form>
-        ) : (
-          <h2> You're not logged in </h2>
-        )}
-
-        {!token ? (
+      {!token && (
+        <div>
+          <LandingPage />
+          {/* TODO: tailwind */}
           <div className="btn-login">
             <a
               href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDITECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`}
@@ -258,32 +203,62 @@ function Home() {
               Login
             </a>
           </div>
-        ) : (
-          <button className="btn-logout" onClick={logout}>
-            Logout
-          </button>
+        </div>
+      )}
+
+      <div className="container flex-1 flex">
+        {token && (
+          <div className="sidebar flex-col h-screen bg-zinc-800 w-64 overflow-y-auto">
+            <h1 className="logo text-4xl font-bold pl-4 pt-10">playroll</h1>
+            <br />
+            <p className="text-2xl font-bold pl-4 pt-10">create a playlist</p>
+            <div>
+              <PlaylistForm
+                input={(e) => setTitle(e.target.value)}
+                description={(e) => setDescription(e.target.value)}
+                createPlaylist={handlePlaylist}
+              />
+            </div>
+
+            {/* TODO: tailwind */}
+            <button
+              className="btn-logout ml-4 mt-20 align-baseline"
+              onClick={logout}
+            >
+              Logout
+            </button>
+
+            {/* TODO: debug test elements; delete later */}
+            {token && <button onClick={getUser}>Profile</button>}
+            {token && <button onClick={getPlaylist}>View Playlist</button>}
+          </div>
         )}
 
         {token && (
-          <PlaylistForm
-            input={(e) => setTitle(e.target.value)}
-            description={(e) => setDescription(e.target.value)}
-            createPlaylist={handlePlaylist}
-          />
-        )}
+          <div className="content-area flex-1 overflow-y-auto">
+            <div className="my-7 mx-7">
+              <SearchBar
+                onSubmit={getTracks}
+                onChange={(e) => {
+                  setSearchParam(e.target.value);
+                }}
+                onClick={isClicked}
+              />
+            </div>
 
-        {token && <button onClick={getUser}>Profile</button>}
-        {token && <button onClick={getPlaylist}>View Playlist</button>}
+            <h1 className="font-bold mx-11 text-2xl">
+              select songs to add to your playlist !
+            </h1>
 
-        <>
-          <br />
-          <br />
-          {submitted ? (
+            {/* TODO: tailwind */}
+            {submitted ? (
             <table>
               <tbody>{mapTracks}</tbody>
             </table>
           ) : null}
-        </>
+          
+          </div>
+        )}
       </div>
     </>
   );

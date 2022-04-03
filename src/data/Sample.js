@@ -1,3 +1,7 @@
+/**
+ * sample data (when not fetching from api)
+ */
+
 const data = [
   {
     album: {

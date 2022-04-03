@@ -1,45 +1,43 @@
-.song-list {
-  margin-left: 20px;
-}
-
-th {
-  text-align: left;
-  color: white;
-  padding-top: 10px;
+.song-area {
+  border-radius: 10px;
+  background-color: #272727;
+  margin-bottom: 20px;
+  height: 100px;
 }
 
 .album-img {
   padding: 0px 8px 5px 30px;
+  float: left;
 }
 
-/* TODO: not showing */
-.song-area {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+.song-main {
+  float: left;
 }
 
-.song-item {
-  vertical-align: middle;
+.song-item .artist {
+  display: absolute;
+}
+
+.song-item .album {
+  float: left;
+  width: 20%;
 }
 
 .title {
-  width: 400px;
   padding: 0px 8px 5px 30px;
 }
 
-.artist {
-  width: 200px;
-}
-
-.album {
-  width: 300px;
+.btn-area {
+  float: left;
 }
 
 img {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
 }
 
 .btn-select {
+  color: black;
   padding: 2px 5px 2px;
   margin-bottom: 40px;
   margin-left: 20px;

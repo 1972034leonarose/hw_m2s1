@@ -11,7 +11,7 @@ import { PlaylistForm } from "../../components/molecules/PlaylistForm/index";
  * local storage ga perlu?
  */
 
-function Track() {
+function Home() {
   const CLIENT_ID = "bfa3638f86ad48c1972f2b90b2f45ae7";
   const REDITECT_URI = "http://localhost:3000";
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
@@ -289,4 +289,4 @@ function Track() {
   );
 }
 
-export default Track;
+export default Home;

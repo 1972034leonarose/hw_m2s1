@@ -1,13 +1,5 @@
-.container{
-  /* TODO: height is so wrong */
-  height: 100%;
-  background-color: hsl(0, 0%, 7%);
-  padding: 30px;
-  color:#f7f7f7;
-}
-
-
-h2{
+*{
+  box-sizing: border-box;
   color: white;
 }
 

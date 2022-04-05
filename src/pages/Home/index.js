@@ -6,6 +6,9 @@ import { PlaylistForm } from "../../components/molecules/PlaylistForm/index";
 import LandingPage from "../LandingPage";
 import { SearchBar } from "../../components/molecules/SearchBar";
 
+import { setToken, removeToken } from "../../redux/slices";
+import { useSelector, useDispatch } from "react-redux";
+
 /**
  * to-do:
  * add tailwind
@@ -20,7 +23,10 @@ function Home() {
   const RESPONSE_TYPE = "token";
   const SCOPE = "playlist-modify-private";
 
-  const [token, setToken] = useState("");
+  const dispatch = useDispatch();
+  let { token } = useSelector((state) => state.auth);
+
+  // const [token, setToken] = useState("");
 
   const [searchParam, setSearchParam] = useState("");
   const [tracks, setTracks] = useState([]);
@@ -48,7 +54,8 @@ function Home() {
       window.location.hash = "";
       window.localStorage.setItem("token", token);
     }
-    setToken(token);
+    // setToken(token);
+    dispatch(setToken(token));
   }, []);
 
   // to display selected tracks ?
@@ -63,7 +70,8 @@ function Home() {
 
   // to clear token / local storage
   const logout = () => {
-    setToken("");
+    // setToken("");
+    dispatch(removeToken());
     window.localStorage.removeItem("token");
   };
   // ===================  end USE EFFECTS ====================

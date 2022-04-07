@@ -202,15 +202,15 @@ function Home() {
     <>
       {!token && (
         <div>
-          <LandingPage />
+          <LandingPage endpoint={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDITECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`}/>
           {/* TODO: tailwind */}
-          <div className="btn-login">
+          {/* <div className="btn-login">
             <a
               href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDITECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`}
             >
               Login
             </a>
-          </div>
+          </div> */}
         </div>
       )}
 

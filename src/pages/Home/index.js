@@ -1,104 +1,70 @@
 import React, { useState, useEffect } from "react";
 import "../../App.css";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import { removeToken, setProfile } from "../../redux/slices";
+
+import { SearchBar } from "../../components/molecules/SearchBar";
+import LandingPage from "../LandingPage";
 import { SongCard } from "../../components/molecules/SongCard/index";
 import { PlaylistForm } from "../../components/molecules/PlaylistForm/index";
-import LandingPage from "../LandingPage";
-import { SearchBar } from "../../components/molecules/SearchBar";
-
-import { setToken, removeToken } from "../../redux/slices";
-import { useSelector, useDispatch } from "react-redux";
 
 /**
  * to-do:
  * add tailwind
- * select buttons dont change accordingly, but selected data stored
- * sometimes berhasil post, sometimes ga ? 
+ * length check on form
+ * logout route
+ * page refresh langsung ke logout
  */
 
 function Home() {
-  const CLIENT_ID = "bfa3638f86ad48c1972f2b90b2f45ae7";
-  const REDITECT_URI = "http://localhost:3000";
-  const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
-  const RESPONSE_TYPE = "token";
-  const SCOPE = "playlist-modify-private";
-
   const dispatch = useDispatch();
-  let { token } = useSelector((state) => state.auth);
-
-  // const [token, setToken] = useState("");
+  let { token, isAuthorized, profile } = useSelector((state) => state.auth);
 
   const [searchParam, setSearchParam] = useState("");
   const [tracks, setTracks] = useState([]);
 
   const [submitted, setIsSubmitted] = useState(false);
-  const [playlist, setPlaylist] = useState([]); // to store what's been selected
+  const [selectedSongs, setSelectedSongs] = useState([]); 
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [profile, setProfile] = useState([]);
 
-  // ===================  USE EFFECTS ====================
-  // to authorize
-  useEffect(() => {
-    const hash = window.location.hash;
-    let token = window.localStorage.getItem("token");
-
-    if (!token && hash) {
-      token = hash
-        .substring(1)
-        .split("&")
-        .find((elem) => elem.startsWith("access_token"))
-        .split("=")[1];
-
-      window.location.hash = "";
-      window.localStorage.setItem("token", token);
-    }
-    // setToken(token);
-    dispatch(setToken(token));
-  }, []);
-
-  // to display selected tracks ?
+  // to display selected tracks 
   useEffect(() => {
     if (!submitted) {
       const tempSelectedSong = tracks.filter((searchValue) =>
-        playlist.includes(searchValue.uri)
+        selectedSongs.includes(searchValue.uri)
       );
       setTracks(tempSelectedSong);
     }
-  }, [playlist]);
+  }, [selectedSongs]);
 
-  // to clear token / local storage
+  // to clear token
   const logout = () => {
-    // setToken("");
     dispatch(removeToken());
     window.localStorage.removeItem("token");
   };
-  // ===================  end USE EFFECTS ====================
 
   // ===================  USER DETAILS ====================
   const getUser = async () => {
-    const fetchedProfile = await axios
+    await axios
       .get("https://api.spotify.com/v1/me", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
-        return res.data;
+        dispatch(setProfile(res.data));
       })
       .catch((e) => console.log(e));
-    setProfile(fetchedProfile);
-    console.log(fetchedProfile);
   };
   // =================== end USER DETAILS ====================
 
   const createPlaylist = async () => {
-    const userId = profile.id;
-    console.log(userId);
     // make the playlist
     const response = await axios.post(
-      `https://api.spotify.com/v1/users/${userId}/playlists`,
+      `https://api.spotify.com/v1/users/${profile.id}/playlists`,
       {
         name: title,
         description: description,
@@ -118,7 +84,7 @@ function Home() {
   };
 
   const addToPlaylist = async (playlistId) => {
-    const uris = playlist;
+    const uris = selectedSongs;
     console.log(token);
     const data = JSON.stringify({ uris });
 
@@ -142,16 +108,14 @@ function Home() {
     await addToPlaylist(playlistId);
   };
 
-  // song = track.uri
-  const handleSelect = (song) => {
-    if (playlist.includes(song)) {
-      const removed = playlist.filter((track) => track !== song);
-      setPlaylist(removed);
+  const handleSelect = (trackUri) => {
+    if (selectedSongs.includes(trackUri)) {
+      setSelectedSongs(previous => previous.filter((track) => track !== trackUri));
     } else {
-      setPlaylist([...playlist, song]);
+      setSelectedSongs(previous => [...previous, trackUri]);
     }
     console.log("playlist:");
-    console.log(playlist);
+    console.log(selectedSongs);
   };
 
   const isClicked = () => setIsSubmitted(true);
@@ -171,7 +135,6 @@ function Home() {
         },
       })
       .then((response) => {
-        // selected does not maintain state (button), after another is selected
         response ? setIsSubmitted(true) : setIsSubmitted(false);
         console.log(submitted);
         return response.data.tracks.items;
@@ -185,37 +148,23 @@ function Home() {
   // map tracks that is being searched
   const mapTracks = tracks.map((track) => (
     <SongCard
-      key={track.uri} // use uri as identifier
+      key={track.uri} 
       image={track.album.images[2].url}
       title={track.name}
       artist={track.artists[0].name}
       album={track.album.name}
       selectSong={() => handleSelect(track.uri)}
+      isSelected={selectedSongs.includes(track.uri)}
     />
   ));
 
   const getPlaylist = () => {
-    console.log(playlist);
+    console.log(selectedSongs);
   };
 
   return (
     <>
-      {!token && (
-        <div>
-          <LandingPage endpoint={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDITECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`}/>
-          {/* TODO: tailwind */}
-          {/* <div className="btn-login">
-            <a
-              href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDITECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`}
-            >
-              Login
-            </a>
-          </div> */}
-        </div>
-      )}
-
       <div className="container flex-1 flex">
-        {token && (
           <div className="sidebar flex-col h-screen bg-zinc-800 w-64 overflow-y-auto">
             <h1 className="logo text-4xl font-bold pl-4 pt-10">playroll</h1>
             <br />
@@ -237,12 +186,10 @@ function Home() {
             </button>
 
             {/* TODO: debug test elements; delete later */}
-            {token && <button onClick={getUser}>Profile</button>}
-            {token && <button onClick={getPlaylist}>View Playlist</button>}
+           <button onClick={getUser}>Profile</button>
+            <button onClick={getPlaylist}>View Playlist</button>
           </div>
-        )}
-
-        {token && (
+        
           <div className="content-area flex-1 overflow-y-auto">
             <div className="my-7 mx-7">
               <SearchBar
@@ -266,7 +213,8 @@ function Home() {
           ) : null}
           
           </div>
-        )}
+          {/* test bugs */}
+          {console.log(isAuthorized)};
       </div>
     </>
   );

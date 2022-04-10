@@ -1,37 +1,19 @@
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "../pages/LandingPage";
 import Home from "../pages/Home";
-import { useSelector } from "react-redux";
+import NotFound from "../pages/NotFound";
 
-const Routing = () => {
-  const { isAuthorized } = useSelector((state) => state.auth);
+function Routing() {
   return (
     <Router>
-      <div className="btn-login">
-        {/* landing page */}
-        <Link to="/">Login</Link>
-      </div>
-
-      <div className="btn-login">
-        {/* to playlist page */}
-        <Link to="/home">Create Playlist</Link>
-      </div>
-
-      <Switch>
-        <Route path="/home">
-          {isAuthorized ? (
-            <Home />
-          ) : (
-            <Redirect exact from="/home" to="/" />
-          )}
-        </Route>
-
-        <Route path="/">
-          <LandingPage />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<LandingPage />} exact />
+        <Route path="*" element={<NotFound />}></Route>
+      </Routes>
     </Router>
   );
-};
+}
 
 export { Routing };

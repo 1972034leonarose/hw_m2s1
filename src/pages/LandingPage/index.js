@@ -5,25 +5,20 @@ import { setToken } from "../../redux/slices";
 
 function LandingPage() {
   const dispatch = useDispatch();
-  const { isAuthorized } = useSelector((state) => state.auth);
+  const { token, isAuthorized, profile } = useSelector((state) => state.auth);
   let navigate = useNavigate();
-  // let { token } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const hash = window.location.hash;
-    let token = window.localStorage.getItem("token");
 
-    if (!token && hash) {
-      token = hash
+    if (!token && hash) { 
+      const temp = hash
         .substring(1)
         .split("&")
         .find((elem) => elem.startsWith("access_token"))
         .split("=")[1];
-
-      window.location.hash = "";
-      window.localStorage.setItem("token", token);
+        dispatch(setToken(temp));
     }
-    dispatch(setToken(token));
   }, []);
 
   const CLIENT_ID = "bfa3638f86ad48c1972f2b90b2f45ae7";
@@ -39,22 +34,17 @@ function LandingPage() {
       <h1 className="text-5xl">welcome to</h1>
       <h1 className="text-5xl font-bold py-3">playroll</h1>
       <br />
-      <p>Test!</p>
-      <a href={authUrl}>Authorize</a>
+      <a href={authUrl}>Authorize </a>
       <button
         onClick={() => {
           isAuthorized ? navigate("/home") : navigate("/");
         }}
       >
-        Login
+        Create Playlist 
       </button>
-      <button
-        onClick={() => {
-          isAuthorized ? navigate("/home") : navigate("/");
-        }}
-      >
-        Create Playlist
-      </button>
+      {/* test bugs */}
+      {console.log(isAuthorized)}
+      {console.log(`Profile: ${profile.display_name}`)}
     </div>
   );
 }

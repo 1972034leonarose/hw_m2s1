@@ -8,18 +8,20 @@ export function SongCard(props) {
   };
 
   return (
-    <tr className="song-area">
-      <td className="album-img">
-          <img src={props.image} className="song-img" alt={props.title} />
-        </td>
-      <td className="song-item title">{props.title}</td>
-      <td className="song-item artist">{props.artist}</td>
-      <td className="song-item album">{props.album}</td>
-      <td>
+    <div className="song-area">
+      <div className="album-img">
+        <img src={props.image} className="song-img" alt={props.title} />
+      </div>
+      <div className="song-details">
+        <div className="song-item title"><p>{props.title}</p></div>
+        <div className="song-item artist"><p>{props.artist}</p></div>
+        <div className="song-item album"><p>{props.album}</p></div>
+        <div>
           <SelectButton className="btn-area" type="button" onClick={isSelected}>
             {props.isSelected ? "deselect" : "select"}
           </SelectButton>
-        </td>
-    </tr>
+        </div>
+      </div>
+    </div>
   );
 }

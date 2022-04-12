@@ -1,57 +1,38 @@
-.song-area {
-  border-radius: 10px;
+.song-area{
   background-color: #272727;
-  margin-bottom: 20px;
-  height: 100px;
-}
-
-.album-img {
-  padding: 0px 8px 5px 30px;
-  float: left;
-}
-
-.song-main {
-  float: left;
-}
-
-.song-item .artist {
-  display: absolute;
-}
-
-.song-item .album {
-  float: left;
-  width: 20%;
-}
-
-.title {
-  padding: 0px 8px 5px 30px;
-}
-
-.btn-area {
-  float: left;
-}
-
-img {
-  width: 80px;
-  height: 80px;
-}
-
-.btn-select {
-  color: black;
-  padding: 2px 5px 2px;
-  margin-bottom: 40px;
-  margin-left: 20px;
-  width: 130px;
-  height: 38px;
-  background-color: #63d05e;
-  border: none;
-  color: #121212;
-  font-weight: 600;
-  font-size: 16px;
   border-radius: 5px;
-  cursor: pointer;
+  width: 300px;
+  height: 130px;
+
+  display: grid;
+  grid-template-columns: 30% auto;
+  grid-gap: 20px;
+  align-content: center;
+  justify-content: center;
+
+  margin-bottom: 20px;
 }
 
-.btn-select:hover {
-  opacity: 85%;
+.song-details{
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+}
+
+p{
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.artist, .album{
+  color: #ffffffbb;
+}
+
+
+img{
+  margin-top: 5px;
+  width: 100px;
+  height: 100px;
 }

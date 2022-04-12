@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../App.css";
+import "./styles.css";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { removeToken, setProfile } from "../../redux/slices";
@@ -23,10 +24,8 @@ function Home() {
 
   const [searchParam, setSearchParam] = useState("");
   const [tracks, setTracks] = useState([]);
-
-  const [submitted, setIsSubmitted] = useState(false);
   const [selectedSongs, setSelectedSongs] = useState([]); 
-
+  const [submitted, setIsSubmitted] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
@@ -207,14 +206,14 @@ function Home() {
 
             {/* TODO: tailwind */}
             {submitted ? (
-            <table>
-              <tbody>{mapTracks}</tbody>
-            </table>
+            <div className="track-area">
+              {mapTracks}
+            </div>
           ) : null}
           
           </div>
           {/* test bugs */}
-          {console.log(isAuthorized)};
+          {console.log(isAuthorized)}
       </div>
     </>
   );

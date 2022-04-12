@@ -1,0 +1,8 @@
+.track-area{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-left: 40px;
+    margin-top: 30px;
+}

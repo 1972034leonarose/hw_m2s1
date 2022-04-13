@@ -24,12 +24,12 @@ function Home() {
 
   const [searchParam, setSearchParam] = useState("");
   const [tracks, setTracks] = useState([]);
-  const [selectedSongs, setSelectedSongs] = useState([]); 
+  const [selectedSongs, setSelectedSongs] = useState([]);
   const [submitted, setIsSubmitted] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  // to display selected tracks 
+  // to display selected tracks
   useEffect(() => {
     if (!submitted) {
       const tempSelectedSong = tracks.filter((searchValue) =>
@@ -42,7 +42,6 @@ function Home() {
   // to clear token
   const logout = () => {
     dispatch(removeToken());
-    window.localStorage.removeItem("token");
   };
 
   // ===================  USER DETAILS ====================
@@ -109,9 +108,11 @@ function Home() {
 
   const handleSelect = (trackUri) => {
     if (selectedSongs.includes(trackUri)) {
-      setSelectedSongs(previous => previous.filter((track) => track !== trackUri));
+      setSelectedSongs((previous) =>
+        previous.filter((track) => track !== trackUri)
+      );
     } else {
-      setSelectedSongs(previous => [...previous, trackUri]);
+      setSelectedSongs((previous) => [...previous, trackUri]);
     }
     console.log("playlist:");
     console.log(selectedSongs);
@@ -147,7 +148,7 @@ function Home() {
   // map tracks that is being searched
   const mapTracks = tracks.map((track) => (
     <SongCard
-      key={track.uri} 
+      key={track.uri}
       image={track.album.images[2].url}
       title={track.name}
       artist={track.artists[0].name}
@@ -164,56 +165,53 @@ function Home() {
   return (
     <>
       <div className="container flex-1 flex">
-          <div className="sidebar flex-col h-screen bg-zinc-800 w-64 overflow-y-auto">
-            <h1 className="logo text-4xl font-bold pl-4 pt-10">playroll</h1>
-            <br />
-            <p className="text-2xl font-bold pl-4 pt-10">create a playlist</p>
-            <div>
-              <PlaylistForm
-                input={(e) => setTitle(e.target.value)}
-                description={(e) => setDescription(e.target.value)}
-                createPlaylist={handlePlaylist}
-              />
-            </div>
+        <div className="sidebar flex-col bg-zinc-800 w-64 h-screen sticky overflow-y-auto">
+          <h1 className="logo text-4xl font-bold pl-4 pt-10">playroll</h1>
+          <br />
+          <p className="text-2xl font-bold pl-4 pt-10">create a playlist</p>
+          <div>
+            <PlaylistForm
+              input={(e) => setTitle(e.target.value)}
+              description={(e) => setDescription(e.target.value)}
+              createPlaylist={handlePlaylist}
+            />
+          </div>
 
-            {/* TODO: tailwind */}
+          {/* TODO: tailwind to bottom */}
+          <div className="grid grid-cols-1">
             <button
-              className="btn-logout ml-4 mt-20 align-baseline"
+              className="text-s w-50 text-center bg-pink-600 hover:bg-pink-600/75 text-white font-bold mt-3 mx-4 py-2 px-4 rounded"
               onClick={logout}
             >
-              Logout
+              logout
             </button>
-
-            {/* TODO: debug test elements; delete later */}
-           <button onClick={getUser}>Profile</button>
-            <button onClick={getPlaylist}>View Playlist</button>
           </div>
-        
-          <div className="content-area flex-1 overflow-y-auto">
-            <div className="my-7 mx-7">
-              <SearchBar
-                onSubmit={getTracks}
-                onChange={(e) => {
-                  setSearchParam(e.target.value);
-                }}
-                onClick={isClicked}
-              />
-            </div>
 
-            <h1 className="font-bold mx-11 text-2xl">
-              select songs to add to your playlist !
-            </h1>
+          {/* TODO: debug test elements; delete later
+          <button onClick={getUser}>Profile</button>
+          <button onClick={getPlaylist}>View Playlist</button> */}
+        </div>
 
-            {/* TODO: tailwind */}
-            {submitted ? (
-            <div className="track-area">
-              {mapTracks}
-            </div>
-          ) : null}
-          
+        <div className="content-area flex-1 overflow-y-auto">
+          <div className="my-7 mx-7">
+            <SearchBar
+              onSubmit={getTracks}
+              onChange={(e) => {
+                setSearchParam(e.target.value);
+              }}
+              onClick={isClicked}
+            />
           </div>
-          {/* test bugs */}
-          {console.log(isAuthorized)}
+
+          <h1 className="font-bold mx-11 text-2xl">
+            select songs to add to your playlist !
+          </h1>
+
+          {/* TODO: tailwind */}
+          {submitted ? <div className="track-area">{mapTracks}</div> : null}
+        </div>
+        {/* test bugs */}
+        {console.log(isAuthorized)}
       </div>
     </>
   );

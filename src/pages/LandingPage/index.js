@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "../../redux/slices";
+import HeadphonesIcon from "@mui/icons-material/Headphones";
 
 function LandingPage() {
   const dispatch = useDispatch();
@@ -11,13 +12,13 @@ function LandingPage() {
   useEffect(() => {
     const hash = window.location.hash;
 
-    if (!token && hash) { 
+    if (!token && hash) {
       const temp = hash
         .substring(1)
         .split("&")
         .find((elem) => elem.startsWith("access_token"))
         .split("=")[1];
-        dispatch(setToken(temp));
+      dispatch(setToken(temp));
     }
   }, []);
 
@@ -30,21 +31,37 @@ function LandingPage() {
   const authUrl = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDITECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
 
   return (
-    <div className="py-3">
+    <div className="my-56 mx-24">
       <h1 className="text-5xl">welcome to</h1>
-      <h1 className="text-5xl font-bold py-3">playroll</h1>
-      <br />
-      <a href={authUrl}>Authorize </a>
-      <button
-        onClick={() => {
-          isAuthorized ? navigate("/home") : navigate("/");
-        }}
-      >
-        Create Playlist 
-      </button>
-      {/* test bugs */}
-      {console.log(isAuthorized)}
-      {console.log(`Profile: ${profile.display_name}`)}
+      <div className="flex items-center space-x-2">
+        <span className="logo flex-col float-left">
+          <HeadphonesIcon />
+        </span>
+
+        <h1 className="text-5xl font-bold py-3">playroll</h1>
+      </div>
+
+      <div className="flex space-x-4 mt-4">
+        <a
+          className="text-lg w-42 text-center bg-pink-600 hover:bg-pink-600/75 text-white font-bold mt-3 py-2 px-3 rounded"
+          href={authUrl}
+        >
+          Authorize{" "}
+        </a>
+
+        {/* TODO: not authorized; do cursor warning maybe*/}
+        <button
+          className="text-lg w-42 text-center bg-pink-600 hover:bg-pink-600/75 text-white font-bold mt-3 py-2 px-3 rounded"
+          onClick={() => {
+            isAuthorized ? navigate("/home") : navigate("/");
+          }}
+        >
+          Create Playlist
+        </button>
+        {/* test bugs */}
+        {console.log(isAuthorized)}
+        {console.log(`Profile: ${profile.display_name}`)}
+      </div>
     </div>
   );
 }

@@ -9,11 +9,12 @@ function Routing() {
   const { isAuthorized } = useSelector((state) => state.auth);
 
   return (
+    // TODO: check conditional routing; when not auth path directs to notfound
     <Router>
       <Routes>
         {isAuthorized && (<Route path="/home" element={<Home />} />)};
         <Route path="/" element={<LandingPage />} exact />
-        {/* <Route path="*" element={<NotFound />}></Route> */}
+        <Route path="*" element={<NotFound /> } exact />
       </Routes>
     </Router>
   );

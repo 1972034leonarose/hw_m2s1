@@ -1,11 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const trackSlice = createSlice({
+type StateType = {
+  tracks: Array<object>;
+  selectedTracks: Array<object>;
+};
+
+const initialState: StateType = {
+  tracks: [],
+  selectedTracks: [],
+};
+
+const trackSlice = createSlice({
   name: "tracks",
-  initialState: {
-    tracks: {},
-    selectedTracks: {},
-  },
+  initialState,
   reducers: {
     // tracks that are being searched
     setTracks: (state, action) => {

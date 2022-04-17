@@ -1,12 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const authSlice = createSlice({
+type StateType = {
+  token: string,
+  isAuthorized: boolean,
+  profile: object
+}
+
+const initialState: StateType = {
+  token: "",
+  isAuthorized: false,
+  profile: {}
+}
+
+const authSlice = createSlice({
   name: "authorize",
-  initialState: {
-    token: "",
-    isAuthorized: false,
-    profile: {},
-  },
+  initialState,
   reducers: {
     setToken: (state, action) => {
       state.token = action.payload;
@@ -20,7 +28,6 @@ export const authSlice = createSlice({
     },
   },
 });
-
 
 export const { setToken, setProfile, removeToken } = authSlice.actions;
 export default authSlice.reducer;

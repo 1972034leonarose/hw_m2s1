@@ -1,63 +1,43 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "../../App.css";
 import "./styles.css";
+
+// third-party
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { removeToken, setProfile } from "../../redux/slices";
 
+// redux-states
+import { setTracks } from "../../redux/trackSlice";
+
+// components & lib
+import useHandlers from "../../lib/useHandlers";
 import { SearchBar } from "../../components/molecules/SearchBar";
-import LandingPage from "../LandingPage";
 import { SongCard } from "../../components/molecules/SongCard/index";
 import { PlaylistForm } from "../../components/molecules/PlaylistForm/index";
 
-/**
- * to-do:
- * add tailwind
- * length check on form
- * logout route
- * page refresh langsung ke logout
- */
-
 function Home() {
   const dispatch = useDispatch();
+  const { handleProfile, handleSearch, logout } = useHandlers();
+
   let { token, isAuthorized, profile } = useSelector((state) => state.auth);
+  let { tracks } = useSelector((state) => state.track);
 
   const [searchParam, setSearchParam] = useState("");
-  const [tracks, setTracks] = useState([]);
-  const [selectedSongs, setSelectedSongs] = useState([]);
   const [submitted, setIsSubmitted] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+
+  const [selectedTracks, setSelectedTracks] = useState([]);
 
   // to display selected tracks
   useEffect(() => {
     if (!submitted) {
       const tempSelectedSong = tracks.filter((searchValue) =>
-        selectedSongs.includes(searchValue.uri)
+        selectedTracks.includes(searchValue.uri)
       );
-      setTracks(tempSelectedSong);
+      dispatch(setTracks(tempSelectedSong));
     }
-  }, [selectedSongs]);
-
-  // to clear token
-  const logout = () => {
-    dispatch(removeToken());
-  };
-
-  // ===================  USER DETAILS ====================
-  const getUser = async () => {
-    await axios
-      .get("https://api.spotify.com/v1/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        dispatch(setProfile(res.data));
-      })
-      .catch((e) => console.log(e));
-  };
-  // =================== end USER DETAILS ====================
+  }, [selectedTracks]);
 
   const createPlaylist = async () => {
     // make the playlist
@@ -82,10 +62,8 @@ function Home() {
   };
 
   const addToPlaylist = async (playlistId) => {
-    const uris = selectedSongs;
-    console.log(token);
+    const uris = selectedTracks;
     const data = JSON.stringify({ uris });
-
     await axios
       .post(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, data, {
         headers: {
@@ -107,42 +85,15 @@ function Home() {
   };
 
   const handleSelect = (trackUri) => {
-    if (selectedSongs.includes(trackUri)) {
-      setSelectedSongs((previous) =>
+    if (selectedTracks.includes(trackUri)) {
+      setSelectedTracks((previous) =>
         previous.filter((track) => track !== trackUri)
       );
     } else {
-      setSelectedSongs((previous) => [...previous, trackUri]);
+      setSelectedTracks((previous) => [...previous, trackUri]);
     }
     console.log("playlist:");
-    console.log(selectedSongs);
-  };
-
-  const isClicked = () => setIsSubmitted(true);
-
-  // call spotify API
-  const getTracks = async (e) => {
-    e.preventDefault();
-    const datas = await axios
-      .get("https://api.spotify.com/v1/search", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          q: searchParam,
-          type: "track",
-          scope: "playlist-modify-private",
-        },
-      })
-      .then((response) => {
-        response ? setIsSubmitted(true) : setIsSubmitted(false);
-        console.log(submitted);
-        return response.data.tracks.items;
-      })
-      .catch((e) => console.log(e));
-
-    console.log(datas);
-    setTracks(datas);
+    console.log(selectedTracks);
   };
 
   // map tracks that is being searched
@@ -154,13 +105,15 @@ function Home() {
       artist={track.artists[0].name}
       album={track.album.name}
       selectSong={() => handleSelect(track.uri)}
-      isSelected={selectedSongs.includes(track.uri)}
+      isSelected={selectedTracks.includes(track.uri)}
     />
   ));
 
   const getPlaylist = () => {
-    console.log(selectedSongs);
+    console.log(selectedTracks);
   };
+  
+  const isClicked = () => setIsSubmitted(true);
 
   return (
     <>
@@ -187,15 +140,15 @@ function Home() {
             </button>
           </div>
 
-          {/* TODO: debug test elements; delete later
-          <button onClick={getUser}>Profile</button>
-          <button onClick={getPlaylist}>View Playlist</button> */}
+          {/* TODO: debug test elements; delete later */}
+          <button onClick={handleProfile}>Profile</button>
+          <button onClick={getPlaylist}>View Playlist</button>
         </div>
 
         <div className="content-area flex-1 overflow-y-auto">
           <div className="my-7 mx-7">
             <SearchBar
-              onSubmit={getTracks}
+              onSubmit={handleSearch}
               onChange={(e) => {
                 setSearchParam(e.target.value);
               }}
@@ -210,8 +163,6 @@ function Home() {
           {/* TODO: tailwind */}
           {submitted ? <div className="track-area">{mapTracks}</div> : null}
         </div>
-        {/* test bugs */}
-        {console.log(isAuthorized)}
       </div>
     </>
   );

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setToken } from "../redux/authSlice";
 
-// user auth via token
+// TODO: fix hash for tsx coversion
 function useToken() {
   let { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -18,6 +18,7 @@ function useToken() {
       dispatch(setToken(temp));
     }
   }, []);
+  
   return { token };
 }
 

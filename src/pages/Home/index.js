@@ -3,11 +3,7 @@ import "../../App.css";
 import "./styles.css";
 
 // third-party
-import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
-
-// redux-states
-import { setTracks } from "../../redux/trackSlice";
+import { useSelector } from "react-redux";
 
 // components & lib
 import useHandlers from "../../lib/useHandlers";
@@ -16,87 +12,19 @@ import { SongCard } from "../../components/molecules/SongCard/index";
 import { PlaylistForm } from "../../components/molecules/PlaylistForm/index";
 
 function Home() {
-  const dispatch = useDispatch();
-  const { handleProfile, handleSearch, logout } = useHandlers();
+  const { handleProfile, handleSearch, handlePlaylist, logout } = useHandlers();
 
-  let { token, isAuthorized, profile } = useSelector((state) => state.auth);
-  let { tracks } = useSelector((state) => state.track);
+  let { token, profile } = useSelector((state) => state.auth);
+  let { tracks, selectedTracks } = useSelector((state) => state.track);
 
   const [searchParam, setSearchParam] = useState("");
   const [submitted, setIsSubmitted] = useState(false);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
 
-  const [selectedTracks, setSelectedTracks] = useState([]);
-
-  // to display selected tracks
   useEffect(() => {
-    if (!submitted) {
-      const tempSelectedSong = tracks.filter((searchValue) =>
-        selectedTracks.includes(searchValue.uri)
-      );
-      dispatch(setTracks(tempSelectedSong));
-    }
-  }, [selectedTracks]);
+    handleProfile();
+  }, [token]);
 
-  const createPlaylist = async () => {
-    // make the playlist
-    const response = await axios.post(
-      `https://api.spotify.com/v1/users/${profile.id}/playlists`,
-      {
-        name: title,
-        description: description,
-        public: false,
-        collaborative: false,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    console.log("response:");
-    console.log(response);
-    return response.data.id;
-  };
-
-  const addToPlaylist = async (playlistId) => {
-    const uris = selectedTracks;
-    const data = JSON.stringify({ uris });
-    await axios
-      .post(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        return res.data;
-      });
-  };
-
-  const handlePlaylist = async (e) => {
-    e.preventDefault();
-    const playlistId = await createPlaylist();
-    console.log(playlistId);
-
-    await addToPlaylist(playlistId);
-  };
-
-  const handleSelect = (trackUri) => {
-    if (selectedTracks.includes(trackUri)) {
-      setSelectedTracks((previous) =>
-        previous.filter((track) => track !== trackUri)
-      );
-    } else {
-      setSelectedTracks((previous) => [...previous, trackUri]);
-    }
-    console.log("playlist:");
-    console.log(selectedTracks);
-  };
-
-  // map tracks that is being searched
+  // map tracks that's being searched
   const mapTracks = tracks.map((track) => (
     <SongCard
       key={track.uri}
@@ -104,15 +32,14 @@ function Home() {
       title={track.name}
       artist={track.artists[0].name}
       album={track.album.name}
-      selectSong={() => handleSelect(track.uri)}
-      isSelected={selectedTracks.includes(track.uri)}
+      trackUri={track.uri}
     />
   ));
 
   const getPlaylist = () => {
     console.log(selectedTracks);
   };
-  
+
   const isClicked = () => setIsSubmitted(true);
 
   return (
@@ -124,8 +51,8 @@ function Home() {
           <p className="text-2xl font-bold pl-4 pt-10">create a playlist</p>
           <div>
             <PlaylistForm
-              input={(e) => setTitle(e.target.value)}
-              description={(e) => setDescription(e.target.value)}
+              // input={(e) => setTitle(e.target.value)}
+              // description={(e) => setDescription(e.target.value)}
               createPlaylist={handlePlaylist}
             />
           </div>
@@ -141,7 +68,7 @@ function Home() {
           </div>
 
           {/* TODO: debug test elements; delete later */}
-          <button onClick={handleProfile}>Profile</button>
+          <button onClick={() => console.log(profile)}>Profile</button>
           <button onClick={getPlaylist}>View Playlist</button>
         </div>
 
@@ -152,6 +79,7 @@ function Home() {
               onChange={(e) => {
                 setSearchParam(e.target.value);
               }}
+              value={searchParam}
               onClick={isClicked}
             />
           </div>
@@ -160,7 +88,6 @@ function Home() {
             select songs to add to your playlist !
           </h1>
 
-          {/* TODO: tailwind */}
           {submitted ? <div className="track-area">{mapTracks}</div> : null}
         </div>
       </div>

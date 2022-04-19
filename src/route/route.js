@@ -14,7 +14,7 @@ function Routing() {
       <Routes>
         {isAuthorized && (<Route path="/home" element={<Home />} />)};
         <Route path="/" element={<LandingPage />} exact />
-        <Route path="*" element={<NotFound /> } exact />
+        {/* <Route path="*" element={<NotFound /> } exact /> */}
       </Routes>
     </Router>
   );

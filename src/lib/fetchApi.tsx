@@ -1,15 +1,14 @@
 import axios from "axios";
 
 // get tracks being searched
-const getTracks = async (token: string) => {
+const getTracks = async (token: string, searchParam: any) => {
   const url = "https://api.spotify.com/v1/search";
   const response = await axios.get(url, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
     params: {
-      // TODO: incorrect when passing searchParam
-      q: "abcdefu",
+      q: searchParam,
       type: "track",
       scope: "playlist-modify-private",
     },
@@ -39,11 +38,13 @@ const createPlaylist = async (title: string, description: string, token: string,
 };
 
 // add selected songs to created playlist
-const addToPlaylist = async (playlistId: string, token: string, songData: any) => {
+const addToPlaylist = async (playlistId: string, token: string, selectedTracks: any) => {
+  const uris = selectedTracks;
+  const trackData = JSON.stringify({ uris });
   const response = await axios
     .post(
       `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-      songData,
+      trackData,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -54,5 +55,4 @@ const addToPlaylist = async (playlistId: string, token: string, songData: any) =
     return response.data;
 };
 
-// TODO: playlist funcs unused atm
 export { getTracks, createPlaylist, addToPlaylist };

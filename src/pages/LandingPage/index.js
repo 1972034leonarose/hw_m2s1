@@ -11,8 +11,7 @@ import useToken from "../../lib/useToken";
 
 function LandingPage() {
   let navigate = useNavigate();
-  let { token } = useToken();
-  let { isAuthorized, profile } = useSelector((state) => state.auth);
+  let { isAuthorized } = useSelector((state) => state.auth);
 
   return (
     <div className="my-56 mx-24">
@@ -42,12 +41,6 @@ function LandingPage() {
         >
           Create Playlist
         </button>
-
-        {/* test bugs */}
-        {console.log(token)}
-        {console.log(isAuthorized)}
-        {console.log(profile)}
-
       </div>
     </div>
   );

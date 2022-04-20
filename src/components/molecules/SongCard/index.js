@@ -18,7 +18,7 @@ export function SongCard(props) {
   };
 
   return (
-    <div className="song-area">
+    <div data-testId="songCard" className="song-area">
       <div className="album-img">
         <img src={props.image} className="song-img" alt={props.title} />
       </div>
@@ -34,6 +34,7 @@ export function SongCard(props) {
         </div>
         <div>
           <SelectButton
+          data-testId="selectButton"
             className="btn-area"
             type="button"
             onClick={() => handleSelect(props.trackUri)}

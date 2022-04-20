@@ -55,4 +55,21 @@ const addToPlaylist = async (playlistId: string, token: string, selectedTracks: 
     return response.data;
 };
 
-export { getTracks, createPlaylist, addToPlaylist };
+// get user data
+const getUser = async (token: string) => {
+  const url = "https://api.spotify.com/v1/me";
+  const datas = await axios
+    .get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((e) => console.log(e));
+    return datas;
+};
+
+
+export { getTracks, createPlaylist, addToPlaylist, getUser };

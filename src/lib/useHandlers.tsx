@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../redux/store";
 import { useNavigate } from "react-router-dom";
 import { setProfile, removeToken } from "../redux/authSlice";
 import { setTracks } from "../redux/trackSlice";
-import { getUser } from "./auth";
-import { getTracks, createPlaylist, addToPlaylist } from "./fetchApi";
+import { getTracks, createPlaylist, addToPlaylist, getUser } from "./fetchApi";
 
 function useHandlers() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   let navigate = useNavigate();
 
-  let { token, profile } = useSelector((state: any) => state.auth);
-  let { selectedTracks } = useSelector((state: any) => state.track);
+  let { token, profile } = useAppSelector((state: any) => state.auth);
+  let { selectedTracks } = useAppSelector((state: any) => state.track);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");

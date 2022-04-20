@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useHandlers from "../../../lib/useHandlers";
+import useHandlers from "../../lib/useHandlers";
 
 interface ClickProps {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;

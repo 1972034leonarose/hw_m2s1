@@ -1,4 +1,4 @@
-import useHandlers from "../../../lib/useHandlers";
+import useHandlers from "../../lib/useHandlers";
 
 interface PlaylistProps {
   title: string;

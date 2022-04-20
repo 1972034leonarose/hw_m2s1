@@ -1,6 +1,6 @@
 import "./styles.css";
-import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import { setSelectedTracks } from "../../../redux/trackSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { setSelectedTracks } from "../../redux/trackSlice";
 
 interface SongProps {
   imageUrl: string;

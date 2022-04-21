@@ -1,41 +1,61 @@
+import { useState } from "react";
+import TextField from "@mui/material/TextField";
 import useHandlers from "../../lib/useHandlers";
 
-interface PlaylistProps {
-  title: string;
-  changeTitle: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  changeDescription: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-export const PlaylistForm = (props: PlaylistProps) => {
+export const PlaylistForm = () => {
   const { handlePlaylist } = useHandlers();
+
+  const defaultValues = {
+    name: "",
+    description: "",
+  };
+
+  const [values, setFormValues] = useState(defaultValues);
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormValues({
+      ...values,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (values.name.length > 9) {
+      handlePlaylist(values.name, values.description);
+    }else{
+      alert("wrong");
+    }
+  };
 
   return (
     <div>
-      <form className="px-4 pt-6 pb-8 mb-4" onSubmit={handlePlaylist}>
-        <input
-          className="text-sm shadow appearance-none border rounded w-48 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      <form className="px-4 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
+        <TextField
+          id="name-field"
+          name="name"
           type="text"
-          placeholder="Title"
-          value={props.title}
-          id="title"
-          name="title"
-          onChange={props.changeTitle}
-          required
-        ></input>
-        <input
-          type="text"
-          className="text-sm shadow appearance-none border rounded w-48 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-3"
-          placeholder="Description"
-          id="description"
+          placeholder="Playlist name"
+          value={values.name}
+          helperText={
+            values.name.length > 9 ? "" : "Title must be at least 10 characters"
+          }
+          onChange={handleChange}
+        />
+
+        <TextField
+          id="desc-field"
           name="description"
-          onChange={props.changeDescription}
-          required
-        ></input>
+          type="text"
+          placeholder="Give it a description"
+          value={values.description}
+          multiline
+          rows={4}
+          onChange={handleChange}
+        />
         <div>
-          <button
-            className="text-sm font-bold bg-pink-600 hover:bg-pink-800 py-2 px-4 mt-3 rounded"
-            // onClick={props.createPlaylist}
-          >
+          <button className="text-sm font-bold bg-pink-600 hover:bg-pink-800 py-2 px-4 mt-3 rounded">
             create
           </button>
         </div>

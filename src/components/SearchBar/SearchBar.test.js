@@ -1,37 +1,46 @@
-import { screen, render } from "@testing-library/react";
+import { screen, render, cleanup, waitFor } from "@testing-library/react";
 import { SearchBar } from "./index";
+import store from "../../redux/store";
+import userEvent from "@testing-library/user-event";
+import { Provider } from "react-redux";
 
-import { rest } from "msw";
-import { setUpServer } from "msw/node"; // setup server object
+const mockedUseNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+   ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockedUseNavigate,
+}));
 
-// TODO: incorrect / incomplete
-const url = "ahjkdd";
-const searchResponse = rest.get(url, (req, res, ctx) => {
-  return res(
-    ctx.json([
-      { href: "https://api.spotify.com/v1/me/shows?offset=0&limit=20\n" },
-    ])
-  );
-});
 
-const server = new searchResponse();
+describe("SearchBar", () => {
+  const onSubmit = jest.fn();
 
-const MockSearchBar = () => {
-  return (
-    <SearchBar
-      onSubmit={searchResponse}
-      onChange="set search param"
-      onClick="click"
-    />
-  );
-};
+  beforeEach(() => {
+    // eslint-disable-next-line testing-library/no-render-in-setup
+    render(
+      <Provider store={store}>
+        <SearchBar onSubmit={onSubmit} />
+      </Provider>
+    );
+  });
+  afterEach(cleanup);
 
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
+  test("components are rendered", () => {
+    const searchInput = screen.getByPlaceholderText("Search for a song");
+    expect(searchInput).toBeInTheDocument();
+  })
 
-test("it should have the correct todo item clean room", async () => {
-  render(<MockSearchBar />);
-  const searchResult = await screen.findByText("bohemian rhapsody");
-  expect(searchResult).toBeVisible();
+  test("should receive input", async () => {
+    const input = screen.getByRole("textbox");
+    userEvent.type(input, { target: { value: "song title" } });
+    // expect(input).toHaveValue("song title");
+
+    userEvent.click(screen.getByRole("button", {name: "search"}));
+
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledTimes(1);
+    });
+
+    expect(onSubmit).toHaveBeenCalledWith({lazy: true});
+  });
+
 });

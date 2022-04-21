@@ -26,6 +26,7 @@ export const SearchBar = (props: ClickProps) => {
       <button
         className="text-sm font-bold bg-pink-600 hover:bg-pink-800 py-2 px-4 mt-3 ml-5 rounded"
         type="submit"
+        name="search"
         onClick={props.onClick}
       >
         search

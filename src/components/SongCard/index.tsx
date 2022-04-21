@@ -6,7 +6,7 @@ interface SongProps {
   imageUrl: string;
   title: string;
   artist: string;
-  album: string;
+  duration: number;
   trackUri: string;
 }
 
@@ -18,7 +18,9 @@ export function SongCard(props: SongProps) {
     if (selectedTracks.includes(trackUri)) {
       // TODO: make track a global type ?
       dispatch(
-        setSelectedTracks(selectedTracks.filter((track: any) => track !== trackUri))
+        setSelectedTracks(
+          selectedTracks.filter((track: any) => track !== trackUri)
+        )
       );
     } else {
       dispatch(setSelectedTracks([...selectedTracks, trackUri]));
@@ -37,8 +39,8 @@ export function SongCard(props: SongProps) {
         <div className="song-item artist">
           <p>{props.artist}</p>
         </div>
-        <div className="song-item album">
-          <p>{props.album}</p>
+        <div className="song-item duration">
+          <p>{props.duration}</p>
         </div>
         <div>
           <button

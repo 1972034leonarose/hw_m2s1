@@ -7,31 +7,37 @@ import { useSelector } from "react-redux";
 
 // components & lib
 import useHandlers from "../../lib/useHandlers";
-import { SearchBar } from "../../components/molecules/SearchBar";
-import { SongCard } from "../../components/molecules/SongCard/index";
-import { PlaylistForm } from "../../components/molecules/PlaylistForm/index";
+import misc from "../../lib/misc";
+import { SearchBar } from "../../components/SearchBar";
+import { SongCard } from "../../components/SongCard";
+import { PlaylistForm } from "../../components/PlaylistForm";
+import { ProfileMenu } from "../../components/ProfileMenu";
 
 function Home() {
-  const { handleProfile, handleSearch, handlePlaylist, logout } = useHandlers();
+  const { handleProfile, logout } = useHandlers();
+  const { convertDuration } = misc();
 
   let { token, profile } = useSelector((state) => state.auth);
   let { tracks, selectedTracks } = useSelector((state) => state.track);
 
-  const [searchParam, setSearchParam] = useState("");
   const [submitted, setIsSubmitted] = useState(false);
-
+ 
+  // set user profile
   useEffect(() => {
     handleProfile();
-  }, [token]);
+  }, []);
+
+  // post playlist
+
 
   // map tracks that's being searched
   const mapTracks = tracks.map((track) => (
     <SongCard
       key={track.uri}
-      image={track.album.images[2].url}
+      imageUrl={track.album.images[2].url}
       title={track.name}
       artist={track.artists[0].name}
-      album={track.album.name}
+      duration={convertDuration(track.duration_ms)}
       trackUri={track.uri}
     />
   ));
@@ -50,11 +56,7 @@ function Home() {
           <br />
           <p className="text-2xl font-bold pl-4 pt-10">create a playlist</p>
           <div>
-            <PlaylistForm
-              // input={(e) => setTitle(e.target.value)}
-              // description={(e) => setDescription(e.target.value)}
-              createPlaylist={handlePlaylist}
-            />
+            <PlaylistForm />
           </div>
 
           {/* TODO: tailwind to bottom */}
@@ -73,15 +75,14 @@ function Home() {
         </div>
 
         <div className="content-area flex-1 overflow-y-auto">
-          <div className="my-7 mx-7">
-            <SearchBar
-              onSubmit={handleSearch}
-              onChange={(e) => {
-                setSearchParam(e.target.value);
-              }}
-              value={searchParam}
-              onClick={isClicked}
-            />
+          <div className="header flex-1">
+            <div className="my-7 mx-7">
+              <SearchBar onClick={isClicked} />
+            </div>
+
+            <div className="my-7 mx-7">
+              <ProfileMenu />
+            </div>
           </div>
 
           <h1 className="font-bold mx-11 text-2xl">

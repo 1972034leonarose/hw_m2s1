@@ -1,8 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
-import store from "../../../redux/store";
+import store from "../../redux/store";
 import { SongCard } from "./index";
-import SelectButton from "../../atoms/SelectButton";
 
 const MockSongCard = () => {
   return (
@@ -13,7 +12,6 @@ const MockSongCard = () => {
         artist="the dog band"
         album="the dog album"
         trackUri="asdfghjkl123"
-
         // ignore select button
       />
     </Provider>

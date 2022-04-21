@@ -1,16 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-type StateType = {
-  token: string,
-  isAuthorized: boolean,
-  profile: object
+interface StateType {
+  token: string;
+  isAuthorized: boolean;
+  profile: object;
 }
 
 const initialState: StateType = {
   token: "",
   isAuthorized: false,
-  profile: {}
-}
+  profile: {},
+};
 
 const authSlice = createSlice({
   name: "authorize",
@@ -25,6 +25,7 @@ const authSlice = createSlice({
     },
     removeToken: (state) => {
       state.token = "";
+      state.isAuthorized = false;
     },
   },
 });

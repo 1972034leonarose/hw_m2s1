@@ -7,7 +7,6 @@ interface ClickProps {
 
 export function SearchBar(props: ClickProps){
   const [searchParam, setSearchParam] = useState("");
-  // TODO: search about whether handler should be refactored or not !
   const { handleSearch } = useHandlers();
 
   return (

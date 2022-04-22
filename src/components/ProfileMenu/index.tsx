@@ -9,13 +9,14 @@ import {
   MenuItem,
   Divider,
   Avatar,
+  IconButton
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 // lib & store
 import { useAppSelector } from "../../redux/store";
 import useHandlers from "../../lib/useHandlers";
 
-// custom styling
+// mui custom styling
 const StyledMenu = styled((props: MenuProps) => (
   <Menu
     elevation={0}
@@ -87,7 +88,7 @@ export function ProfileMenu() {
               ? profile.images[0].url
               : "https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n"
           }
-          sx={{ width: 36, height: 36 }}
+          sx={{ width: 36, height: 36, border: 0, objectFit: 'cover'}} // cropped avatar
         />
       </ProfileButton>
       <StyledMenu

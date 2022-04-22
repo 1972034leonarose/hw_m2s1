@@ -11,8 +11,7 @@ const MockSongCard = () => {
         title="dog"
         artist="the dog band"
         album="the dog album"
-        trackUri="asdfghjkl123"
-        // ignore select button
+        duration="3:31"
       />
     </Provider>
   );

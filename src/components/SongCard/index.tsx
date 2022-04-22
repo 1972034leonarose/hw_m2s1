@@ -2,6 +2,7 @@ import React from "react";
 import "./styles.css";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { setSelectedTracks } from "../../redux/trackSlice";
+import misc from "../../lib/misc";
 
 interface SongProps {
   imageUrl: string;
@@ -13,6 +14,8 @@ interface SongProps {
 
 export function SongCard(props: SongProps) {
   const dispatch = useAppDispatch();
+  const { useTestId } = misc();
+  const testId = useTestId('songCard');
   const { selectedTracks } = useAppSelector((state: any) => state.track);
 
   const handleSelect = (trackUri: string) => {
@@ -28,7 +31,7 @@ export function SongCard(props: SongProps) {
   };
 
   return (
-    <div data-testId="songCard" className="song-area">
+    <div {...testId} className="song-area">
       <div className="album-img">
         <img src={props.imageUrl} className="song-img" alt={props.title} />
       </div>
@@ -44,7 +47,6 @@ export function SongCard(props: SongProps) {
         </div>
         <div>
           <button
-            data-testId="selectButton"
             className="text-sm w-20text-center bg-pink-600 hover:bg-pink-600/75 text-white font-bold mt-3 py-1 px-4 rounded"
             type="button"
             onClick={() => handleSelect(props.trackUri)}

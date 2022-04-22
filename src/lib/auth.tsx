@@ -1,5 +1,5 @@
-const CLIENT_ID = "bfa3638f86ad48c1972f2b90b2f45ae7";
-const REDIRECT_URI = "http://localhost:3000";
+const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
+const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
 const SCOPE = "playlist-modify-private";

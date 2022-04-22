@@ -1,6 +1,6 @@
 # playroll
 
-playroll is a easy-to-use online playlist maker made with the help of Spotify API to integrate your personal data. 
+playroll is a easy-to-use online playlist maker made with the help of Spotify API
 
 - :cherry_blossom: Additional styling using [tailwind-css](https://tailwindcss.com/) & [Material-UI](https://mui.com/) 
 - :rocket: Created with [Create React App](https://github.com/facebook/create-react-app) 
@@ -24,7 +24,7 @@ playroll is a easy-to-use online playlist maker made with the help of Spotify AP
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Next: `cd homework-gigih`
 
 ### 3. Set up environment variables
-- Create a file called `.env.local` and `.env` in your root directory.
+- Create a file called `.env.local` and `.env` in your root directory
 - Update `.env.local` using your local configurations:
 ```bash
 REACT_APP_CLIENT_ID = {your client id}

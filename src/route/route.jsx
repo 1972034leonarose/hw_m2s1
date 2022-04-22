@@ -1,9 +1,13 @@
 import React from "react";
+// third-party
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// pages
 import LandingPage from "../pages/LandingPage";
 import Home from "../pages/Home";
-import { PrivateRoute } from "../components/PrivateRoute";
 import NotFound from "../pages/NotFound";
+// components
+import { PrivateRoute } from "../components/PrivateRoute";
+
 
 function Routing() {
   return (

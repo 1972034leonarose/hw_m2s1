@@ -1,4 +1,4 @@
-# ![#f03c15]playroll`#f03c15`
+# **playroll**
 
 playroll is a easy-to-use online playlist maker made with the help of Spotify API to integrate your personal data. 
 

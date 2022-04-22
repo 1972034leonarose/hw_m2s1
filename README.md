@@ -15,24 +15,29 @@ playroll is a easy-to-use online playlist maker made with the help of Spotify AP
 ## Run it locally
 
 ### 1. Clone the repo
-... In your terminal, type: `git clone https://github.com/catfishona/homework-gigih`
+
+⋅⋅⋅ In your terminal, type: `git clone https://github.com/catfishona/homework-gigih`
 
 
 ### 2. Go to project directory
+
 ⋅⋅⋅ Next: `cd homework-gigih`
 
 ### 3. Set up environment variables
 - Create a file called `.env.local` and `.env` in your root directory.
 - Update `.env.local` using your local configurations:
 ```bash
-REACT_APP_CLIENT_ID = *your client id*
-REACT_APP_REDIRECT_URI = *http://localhost:3000*
+REACT_APP_CLIENT_ID = {your client id}
+REACT_APP_REDIRECT_URI = {http://localhost:3000}
 ```
+
 ⋅⋅⋅ For your client id, see: [Spotify for Developers](https://developer.spotify.com/dashboard/applications)
 ### 4. Install dependencies
+
 ⋅⋅⋅ Still in your terminal, run: `npm install` or `yarn install`
 
 ### 5. Run it
+
 ⋅⋅⋅ :woman_cartwheeling: Lastly, type in: `npm start` or `yarn start` and now you're ready to roll!
 
 ## Got feedback?

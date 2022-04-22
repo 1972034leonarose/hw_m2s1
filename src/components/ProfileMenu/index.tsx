@@ -1,14 +1,21 @@
 import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
-import Button from "@mui/material/Button";
-import Menu, { MenuProps } from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Divider from "@mui/material/Divider";
-import { Avatar } from "@mui/material";
+// third-party
+import { styled } from "@mui/material/styles";
+import {
+  Button,
+  ButtonProps,
+  Menu,
+  MenuProps,
+  MenuItem,
+  Divider,
+  Avatar,
+} from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+// lib & store
 import { useAppSelector } from "../../redux/store";
 import useHandlers from "../../lib/useHandlers";
 
+// custom styling
 const StyledMenu = styled((props: MenuProps) => (
   <Menu
     elevation={0}
@@ -24,36 +31,32 @@ const StyledMenu = styled((props: MenuProps) => (
   />
 ))(({ theme }) => ({
   "& .MuiPaper-root": {
-    borderRadius: 6,
+    borderRadius: 10,
     marginTop: theme.spacing(1),
     minWidth: 180,
-    color:
-      theme.palette.mode === "light"
-        ? "rgb(55, 65, 81)"
-        : theme.palette.grey[300],
+    backgroundColor: "#1C1C1C",
     boxShadow:
       "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
     "& .MuiMenu-list": {
-      padding: "4px 0",
+      padding: "2px 0",
     },
     "& .MuiMenuItem-root": {
-      "& .MuiSvgIcon-root": {
-        fontSize: 18,
-        color: theme.palette.text.secondary,
-        marginRight: theme.spacing(1.5),
-      },
-      "&:active": {
-        backgroundColor: alpha(
-          theme.palette.primary.main,
-          theme.palette.action.selectedOpacity
-        ),
+      "&:hover": {
+        backgroundColor: "rgba(32, 32, 32, .9)",
       },
     },
   },
 }));
 
+const ProfileButton = styled(Button)<ButtonProps>(() => ({
+  backgroundColor: "#1C1C1C",
+  "&:hover": {
+    backgroundColor: "rgba(27, 27, 27, .5)",
+  },
+}));
+
 export function ProfileMenu() {
-  let { profile } = useAppSelector((state: any) => state.auth);
+  const { profile } = useAppSelector((state: any) => state.auth);
   const { logout } = useHandlers();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -67,9 +70,9 @@ export function ProfileMenu() {
 
   return (
     <div>
-      <Button
-        id="demo-customized-button"
-        aria-controls={open ? "demo-customized-menu" : undefined}
+      <ProfileButton
+        id="profile-area"
+        aria-controls={open ? "profile-area" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         variant="contained"
@@ -78,19 +81,19 @@ export function ProfileMenu() {
         endIcon={<KeyboardArrowDownIcon />}
       >
         <Avatar
-          alt="display picture"
+          alt="profile-picture"
           src={
             profile.images !== undefined
               ? profile.images[0].url
               : "https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n"
           }
-          sx={{ width: 24, height: 24 }}
+          sx={{ width: 36, height: 36 }}
         />
-      </Button>
+      </ProfileButton>
       <StyledMenu
-        id="demo-customized-menu"
+        id="profile-dropdown"
         MenuListProps={{
-          "aria-labelledby": "demo-customized-button",
+          "aria-labelledby": "profile-area",
         }}
         anchorEl={anchorEl}
         open={open}

@@ -1,11 +1,11 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import useHandlers from "../../lib/useHandlers";
 
 interface ClickProps {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export const SearchBar = (props: ClickProps) => {
+export function SearchBar(props: ClickProps){
   const [searchParam, setSearchParam] = useState("");
   // TODO: search about whether handler should be refactored or not !
   const { handleSearch } = useHandlers();
@@ -33,4 +33,4 @@ export const SearchBar = (props: ClickProps) => {
       </button>
     </form>
   );
-};
+}

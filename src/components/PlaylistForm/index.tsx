@@ -1,9 +1,28 @@
-import { useState } from "react";
-import TextField from "@mui/material/TextField";
+import React, { useState } from "react";
+// third-party
+import { styled } from "@mui/material/styles";
+import {TextField, InputProps} from "@mui/material";
+// lib & store
 import useHandlers from "../../lib/useHandlers";
+import { setPlaylist } from "../../redux/trackSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 
-export const PlaylistForm = () => {
+// custom styling
+const CustomTextField = styled(TextField)<InputProps>(({ theme }) => ({
+  borderRadius: 10,
+  width: 220,
+  marginBottom: theme.spacing(2),
+  color: "#000000",
+  backgroundColor: "#FFFFFF",
+}));
+
+export function PlaylistForm() {
   const { handlePlaylist } = useHandlers();
+  const dispatch = useAppDispatch();
+
+  const { playlist, selectedTracks } = useAppSelector(
+    (state: any) => state.track
+  );
 
   const defaultValues = {
     name: "",
@@ -22,29 +41,35 @@ export const PlaylistForm = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    if (values.name.length > 9) {
+    if (values.name.length > 9 && selectedTracks.length > 0) {
       handlePlaylist(values.name, values.description);
-    }else{
-      alert("wrong");
+      dispatch(setPlaylist(true));
+      alert("success");
+    } else if (values.name.length > 9 && selectedTracks.length === 0) {
+      handlePlaylist(values.name, values.description);
+      dispatch(setPlaylist(true));
+      alert("empty playlist success");
+    } else {
+      alert("length check");
     }
   };
 
   return (
     <div>
       <form className="px-4 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
-        <TextField
+        <CustomTextField
           id="name-field"
           name="name"
           type="text"
           placeholder="Playlist name"
           value={values.name}
-          helperText={
-            values.name.length > 9 ? "" : "Title must be at least 10 characters"
-          }
+          // helperText={
+          //   values.name.length > 9 ? "" : "Must be at least 10 characters"
+          // }
           onChange={handleChange}
         />
 
-        <TextField
+        <CustomTextField
           id="desc-field"
           name="description"
           type="text"
@@ -62,4 +87,4 @@ export const PlaylistForm = () => {
       </form>
     </div>
   );
-};
+}

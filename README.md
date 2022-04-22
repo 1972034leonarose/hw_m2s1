@@ -16,12 +16,12 @@ playroll is a easy-to-use online playlist maker made with the help of Spotify AP
 
 ### 1. Clone the repo
 
-&nbsp;In your terminal, type: `git clone https://github.com/catfishona/homework-gigih`
+&nbsp;&nbsp;&nbsp;&nbsp;In your terminal, type: `git clone https://github.com/catfishona/homework-gigih`
 
 
 ### 2. Go to project directory
 
-&nbsp;Next: `cd homework-gigih`
+&nbsp;&nbsp;&nbsp;&nbsp;Next: `cd homework-gigih`
 
 ### 3. Set up environment variables
 - Create a file called `.env.local` and `.env` in your root directory.
@@ -31,15 +31,15 @@ REACT_APP_CLIENT_ID = {your client id}
 REACT_APP_REDIRECT_URI = {http://localhost:3000}
 ```
 
-&nbsp;For your client id, see: [Spotify for Developers](https://developer.spotify.com/dashboard/applications)
+&nbsp;&nbsp;&nbsp;&nbsp;For your *client_id*, see: [Spotify for Developers](https://developer.spotify.com/dashboard/applications)
 ### 4. Install dependencies
 
 &nbsp;Still in your terminal, run: `npm install` or `yarn install`
 
 ### 5. Run it
 
-&nbsp;:woman_cartwheeling: Lastly, type in: `npm start` or `yarn start` and now you're ready to roll!
+&nbsp;&nbsp;&nbsp;&nbsp;:woman_cartwheeling: Lastly, type in: `npm start` or `yarn start` and now you're ready to roll!
 
 ## Got feedback?
-⋅⋅⋅ :two_hearts: I truly appreciate feedback! If you got any, feel free to send 'em over to [leozarose@gmail.com](mailto:leozarose@gmail.com)
+&nbsp;&nbsp;&nbsp;&nbsp;:two_hearts: I truly appreciate feedback! If you got any, feel free to send 'em over to [leozarose@gmail.com](mailto:leozarose@gmail.com)
 

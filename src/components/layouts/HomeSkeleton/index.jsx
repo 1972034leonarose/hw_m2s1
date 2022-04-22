@@ -64,18 +64,11 @@ export default function HomeSkeleton() {
               <HeadphonesIcon sx={{ mt: 2 }} />
             </IconButton>
 
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
+
               <SearchBar onClick={isClicked} />
               <Box sx={{ mt: 1, display: "flex", justifyContent: "flex-end" }}>
                 <ProfileMenu />
               </Box>
-            </Box>
           </Toolbar>
         </AppBar>
 

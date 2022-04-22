@@ -54,6 +54,7 @@ export function PlaylistForm() {
       alert("Empty playlist on the roll!");
     } else {
       setNameError(true);
+      alert("Name must be at least 10 characters");
     }
   };
 

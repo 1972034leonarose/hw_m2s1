@@ -8,6 +8,7 @@ import HeadphonesIcon from "@mui/icons-material/Headphones";
 // components
 import { authorizeUser } from "../../lib/auth";
 import useToken from "../../lib/useToken";
+import NameLogo from "../../constants/logo";
 
 function LandingPage() {
   let navigate = useNavigate();
@@ -28,8 +29,9 @@ function LandingPage() {
       </section>
 
       <section id="subheading">
-        <h5 className="text-xl italic leading-normal mt-5 mb-4">
-          by: catfishona ft. gigih
+        <h5 className="text-xl leading-normal mt-5 mb-5">
+          by:&nbsp;<NameLogo symbol="🦁🌹"/>&nbsp; ft. Gigih
+          
         </h5>
       </section>
 

@@ -15,7 +15,7 @@ playroll is a easy-to-use online playlist maker made with the help of Spotify AP
 ## Run it locally
 
 ### 1. Clone the repo
-⋅⋅⋅ In your terminal, type: `git clone https://github.com/catfishona/homework-gigih`
+... In your terminal, type: `git clone https://github.com/catfishona/homework-gigih`
 
 
 ### 2. Go to project directory

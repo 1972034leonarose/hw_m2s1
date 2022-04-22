@@ -22,7 +22,7 @@ export function PlaylistForm() {
   const dispatch = useAppDispatch();
   const [nameError, setNameError] = useState(false);
 
-  const { playlist, selectedTracks } = useAppSelector(
+  const { selectedTracks } = useAppSelector(
     (state: any) => state.track
   );
 

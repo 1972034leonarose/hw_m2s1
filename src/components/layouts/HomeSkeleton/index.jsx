@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import { useAppSelector } from "../../../redux/store";
+// third-party
 import { Box, Typography, Divider, IconButton, Toolbar } from "@mui/material";
+import HeadphonesIcon from "@mui/icons-material/Headphones";
+// components
 import { AppBar } from "../AppBar";
 import { SideBar } from "../SideBar";
-import HeadphonesIcon from "@mui/icons-material/Headphones";
 import { SearchBar } from "../../SearchBar";
 import { ProfileMenu } from "../../ProfileMenu";
 import { PlaylistForm } from "../../PlaylistForm";
 import { SongCard } from "../../SongCard";
+// lib & store
 import misc from "../../../lib/misc";
+import { useAppSelector } from "../../../redux/store";
 
 export default function HomeSkeleton() {
   const [open, setOpen] = useState(true);
@@ -102,7 +105,7 @@ export default function HomeSkeleton() {
             </Typography>
           </Toolbar>
           <Divider />
-
+        {/* Playlist Form*/}
           <PlaylistForm />
         </SideBar>
         <Box
@@ -116,7 +119,7 @@ export default function HomeSkeleton() {
             whiteSpace: "nowrap",
           }}
         >
-          {/* content */}
+          {/* Content area */}
           {submitted ? (
             <div className="track-area">{mapTracks}</div>
           ) : (

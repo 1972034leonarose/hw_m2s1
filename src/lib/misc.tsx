@@ -1,5 +1,6 @@
-function misc() {
+// contains miscellaneous constants
 
+function misc() {
   // to convert song duration
   const convertDuration = (duration: number) => {
     const toMinutes = Math.floor(duration / 60000);

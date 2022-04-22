@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 // third-party
 import { styled } from "@mui/material/styles";
 import {
@@ -9,7 +9,7 @@ import {
   MenuItem,
   Divider,
   Avatar,
-  IconButton
+  IconButton,
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 // lib & store
@@ -81,15 +81,17 @@ export function ProfileMenu() {
         onClick={handleClick}
         endIcon={<KeyboardArrowDownIcon />}
       >
-        <Avatar
-          alt="profile-picture"
-          src={
-            profile.images !== undefined
-              ? profile.images[0].url
-              : "https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n"
-          }
-          sx={{ width: 36, height: 36, border: 0, objectFit: 'cover'}} // cropped avatar
-        />
+        <IconButton>
+          <Avatar
+            alt="profile-picture"
+            src={
+              profile.images !== undefined
+                ? profile.images[0].url
+                : "https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n"
+            }
+            sx={{ width: 36, height: 36, border: 0, objectFit: "cover" }} // cropped avatar
+          />
+        </IconButton>
       </ProfileButton>
       <StyledMenu
         id="profile-dropdown"

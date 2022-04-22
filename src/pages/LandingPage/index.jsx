@@ -1,10 +1,8 @@
 import React from "react";
-
 // third-party
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import HeadphonesIcon from "@mui/icons-material/Headphones";
-
 // components
 import { authorizeUser } from "../../lib/auth";
 import useToken from "../../lib/useToken";
@@ -31,7 +29,6 @@ function LandingPage() {
       <section id="subheading">
         <h5 className="text-xl leading-normal mt-5 mb-5">
           by:&nbsp;<NameLogo symbol="🦁🌹"/>&nbsp; ft. Gigih
-          
         </h5>
       </section>
 

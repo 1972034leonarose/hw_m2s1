@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../redux/store";
 import { setToken } from "../redux/authSlice";
 
+// custom hook to get token
 function useToken() {
   let { token } = useAppSelector((state: any) => state.auth);
   const dispatch = useAppDispatch();

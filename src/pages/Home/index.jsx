@@ -8,7 +8,7 @@ import HomeSkeleton from "../../components/layouts/HomeSkeleton";
 function Home() {
   const { handleProfile } = useHandlers();
 
-  // set user profile
+  // sets user profile on first render
   useEffect(() => {
     handleProfile();
   }, []);

@@ -1,3 +1,5 @@
+// contains authorization constants
+
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const REDIRECT_URI = window.location.href;
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";

@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../redux/store";
 import { useNavigate } from "react-router-dom";
 import { setProfile, removeToken } from "../redux/authSlice";
-import { setTracks, setPlaylist } from "../redux/trackSlice";
+import { setTracks } from "../redux/trackSlice";
 import { getTracks, createPlaylist, addToPlaylist, getUser } from "./fetchApi";
 
 function useHandlers() {
@@ -19,8 +19,6 @@ function useHandlers() {
   const handleSearch = async (e: any) => {
     e.preventDefault();
     const searchParam = e.target.searchParam.value;
-    console.log(`q: ${searchParam}`);
-    console.log(token);
     const trackData = await getTracks(token, searchParam);
     dispatch(setTracks(trackData));
   };
@@ -29,15 +27,10 @@ function useHandlers() {
     console.log(token);
     console.log(`profile: ${profile}`);
     const playlistId = await createPlaylist(title, description, token, profile);
-    
-    if(playlistId !== ""){
-      dispatch(setPlaylist(true));
-    }
-    // TODO: debug
-    console.log(`pId: ${playlistId}`);
-    console.log(`selectedsongs: ${selectedTracks}`);
 
-    await addToPlaylist(playlistId, token, selectedTracks);
+    if (selectedTracks.length > 0) {
+      await addToPlaylist(playlistId, token, selectedTracks);
+    }
   };
 
   const logout = () => {

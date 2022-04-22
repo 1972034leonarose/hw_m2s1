@@ -10,7 +10,7 @@ const getTracks = async (token: string, searchParam: any) => {
     params: {
       q: searchParam,
       type: "track",
-      scope: "playlist-modify-private",
+      limit: 12,
     },
   });
   return response.data.tracks.items;

@@ -1,6 +1,6 @@
 # playroll
 
-playroll is a easy-to-use online playlist maker made with the help of Spotify API
+playroll is a easy-to-use online playlist maker made with the help of Spotify API, check out the live demo [here](https://playroll.vercel.app/) !
 
 - :cherry_blossom: Additional styling using [tailwind-css](https://tailwindcss.com/) & [Material-UI](https://mui.com/) 
 - :rocket: Created with [Create React App](https://github.com/facebook/create-react-app) 
